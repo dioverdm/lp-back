@@ -1,0 +1,140 @@
+/* =====================================================
+   LIQUIDPOS — Design System
+   Paleta: Verde Starbucks desktop + modo oscuro premium
+   ===================================================== */
+
+:root {
+  /* Brand */
+  --brand-primary:    #1DB954;
+  --brand-dark:       #00704A;
+  --brand-darker:     #004F35;
+  --brand-light:      #D4EDDA;
+  --brand-accent:     #CBA258;
+  --brand-accent-lt:  #F5E6C8;
+
+  /* Light Mode */
+  --bg-base:          #F2F0EB;
+  --bg-surface:       #FFFFFF;
+  --bg-surface-2:     #F9F8F6;
+  --bg-surface-3:     #EFEDE8;
+  --bg-hover:         #E8E5DF;
+  --bg-overlay:       rgba(0,0,0,0.45);
+
+  --text-primary:     #1E3932;
+  --text-secondary:   #4A4A4A;
+  --text-muted:       #8A8A8A;
+  --text-inverse:     #FFFFFF;
+
+  --border-color:     #DDD9D1;
+  --border-focus:     #1DB954;
+
+  --shadow-sm:        0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:        0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg:        0 8px 32px rgba(0,0,0,0.14);
+  --shadow-brand:     0 4px 20px rgba(29,185,84,0.25);
+
+  /* Status */
+  --color-success:    #1DB954;
+  --color-warning:    #F5A623;
+  --color-danger:     #E74C3C;
+  --color-info:       #3498DB;
+  --color-success-bg: #D4EDDA;
+  --color-warning-bg: #FEF3CD;
+  --color-danger-bg:  #FDECEA;
+  --color-info-bg:    #D6EAF8;
+
+  /* Layout */
+  --sidebar-width:    240px;
+  --header-height:    64px;
+  --radius-sm:        6px;
+  --radius-md:        12px;
+  --radius-lg:        16px;
+  --radius-xl:        24px;
+  --radius-full:      9999px;
+
+  /* Typography */
+  --font-main:   'Outfit', system-ui, sans-serif;
+  --font-mono:   'Space Mono', monospace;
+
+  /* Transitions */
+  --transition:  all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --bg-base:          #0D1117;
+  --bg-surface:       #161B22;
+  --bg-surface-2:     #1C2128;
+  --bg-surface-3:     #21262D;
+  --bg-hover:         #2D333B;
+  --bg-overlay:       rgba(0,0,0,0.65);
+
+  --text-primary:     #E6EDF3;
+  --text-secondary:   #A8B3BF;
+  --text-muted:       #636E7B;
+  --text-inverse:     #0D1117;
+
+  --border-color:     #30363D;
+  --border-focus:     #1DB954;
+
+  --shadow-sm:        0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md:        0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg:        0 8px 32px rgba(0,0,0,0.5);
+  --shadow-brand:     0 4px 20px rgba(29,185,84,0.35);
+
+  --brand-light:      #0D2B1A;
+  --brand-accent-lt:  #2A1F0A;
+  --color-success-bg: #0D2B1A;
+  --color-warning-bg: #2D1F08;
+  --color-danger-bg:  #2D0A0A;
+  --color-info-bg:    #0A1A2D;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.5;
+  transition: background 0.3s, color 0.3s;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Animations */
+@keyframes fadeIn    { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideIn   { from { transform:translateX(-100%); } to { transform:translateX(0); } }
+@keyframes scaleIn   { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
+@keyframes spin      { to { transform: rotate(360deg); } }
+@keyframes pulse     { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+@keyframes slideUp   { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+@keyframes shimmer   { 0%{background-position:-200% 0;} 100%{background-position:200% 0;} }
+
+.animate-fade-in  { animation: fadeIn  0.3s ease forwards; }
+.animate-scale-in { animation: scaleIn 0.2s ease forwards; }
+.animate-slide-up { animation: slideUp 0.3s ease forwards; }
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-surface-3) 25%, var(--bg-hover) 50%, var(--bg-surface-3) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}

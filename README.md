@@ -1,193 +1,141 @@
-# ⚡ LiquidPOS v2.0
-
-Sistema completo de gestión de inventario, facturación y catálogo público para pequeñas, medianas y grandes empresas.
+# LiquidPOS 🟢
+**Sistema POS SaaS multiempresa — Stack: React + Node.js + MySQL**
 
 ---
 
-## 🗂 Estructura del proyecto
+## 🚀 Setup rápido (desarrollo)
 
+### 1. Base de datos MySQL
+```bash
+mysql -u root -p < backend/schema.sql
 ```
-liquidpos-v2/
-├── backend/          → API Node.js + Express (JWT)
-├── frontend/         → React + Vite (JavaScript)
-└── liquidpos_v2.sql  → Base de datos MySQL completa
-```
-
----
-
-## 🚀 Instalación rápida
-
-### 1. Base de datos
-
-1. Abre **phpMyAdmin** → pestaña **SQL**
-2. Crea la base de datos: `CREATE DATABASE liquidpos CHARACTER SET utf8mb4;`
-3. Selecciónala y ejecuta el contenido de `liquidpos_v2.sql`
-
----
 
 ### 2. Backend
-
 ```bash
 cd backend
 cp .env.example .env
-# Edita .env con tus credenciales de MySQL y JWT_SECRET
+# Edita .env con tus credenciales de DB
 npm install
-npm start         # Producción
-npm run dev       # Desarrollo con hot-reload
+npm run dev
+# → http://localhost:3001
 ```
 
-El servidor corre en `http://localhost:3001`
-
-**Variables `.env` requeridas:**
-| Variable | Descripción |
-|---|---|
-| `DB_HOST` | Host MySQL (ej: localhost) |
-| `DB_PORT` | Puerto MySQL (default: 3306) |
-| `DB_USER` | Usuario MySQL |
-| `DB_PASSWORD` | Contraseña MySQL |
-| `DB_NAME` | Nombre de la BD (liquidpos) |
-| `JWT_SECRET` | Secreto seguro para JWT — cámbialo |
-| `ALLOWED_ORIGINS` | URL del frontend, separadas por coma |
-
----
-
 ### 3. Frontend
-
 ```bash
 cd frontend
 npm install
-npm run dev       # Desarrollo → http://localhost:5173
-npm run build     # Build de producción → dist/
-```
-
-**Variable opcional `.env`:**
-```
-VITE_API_URL=https://tu-backend.vercel.app/api
-```
-Si no se define, usa el proxy de Vite (`/api` → `localhost:3001`).
-
----
-
-## ☁️ Despliegue en Vercel
-
-### Backend
-1. Sube la carpeta `backend/` a un repositorio
-2. Conecta en Vercel → Framework: **Other**
-3. Agrega todas las variables de entorno
-4. El archivo `vercel.json` ya está configurado
-
-### Frontend
-1. Sube la carpeta `frontend/` a un repositorio
-2. Conecta en Vercel → Framework: **Vite**
-3. Agrega `VITE_API_URL=https://tu-backend.vercel.app/api`
-4. El archivo `vercel.json` maneja el routing SPA
-
----
-
-## ✨ Funcionalidades
-
-| Módulo | Descripción |
-|---|---|
-| 🔐 Auth | Registro, login con JWT. Token en localStorage |
-| 🏢 Multi-empresa | Crea múltiples empresas, alterna entre ellas |
-| 👥 Roles | owner · admin · moderator · atc · viewer con permisos automáticos |
-| 📦 Productos | CRUD completo con código de barras, precio, costo, imagen |
-| 🏷 Categorías | Gestión con colores personalizados |
-| 🏭 Bodegas | Múltiples ubicaciones de inventario |
-| 📊 Inventario | Vista grid/tabla, escaneo de código, ajuste de stock |
-| 🧾 Facturación POS | Carrito interactivo, búsqueda de cliente, método de pago |
-| 📄 Facturas | Lista, detalle, cambio de estado, impresión |
-| 👤 Clientes | CRM básico con datos fiscales |
-| 💸 Descuentos | Porcentaje o monto fijo, con código promocional |
-| 📈 Reportes | Ventas diarias, por categoría, KPIs |
-| 🌐 Catálogo público | Ruta `/@slug` accesible sin login |
-| 🔔 Notificaciones | Alertas de stock bajo y agotado |
-| 👑 Planes | free · starter · pro · enterprise con límites reales |
-
----
-
-## 🔑 Credenciales de demo
-
-```
-Email:    demo@liquidpos.app
-Password: demo123
+npm run dev
+# → http://localhost:5173
 ```
 
 ---
 
-## 📡 Endpoints API principales
-
-```
-POST   /api/auth/register
-POST   /api/auth/login
-GET    /api/auth/profile
-
-GET    /api/businesses
-POST   /api/businesses
-GET    /api/businesses/:id/members
-POST   /api/businesses/:id/members
-
-GET    /api/products?search=&category=&lowStock=
-GET    /api/products/barcode/:code
-POST   /api/products
-PUT    /api/products/:id
-PATCH  /api/products/:id/stock
-DELETE /api/products/:id
-
-GET    /api/invoices
-POST   /api/invoices
-PATCH  /api/invoices/:id/status
-
-GET    /api/stats/dashboard
-GET    /api/stats/reports?from=&to=
-
-GET    /api/warehouses
-GET    /api/categories
-GET    /api/discounts
-GET    /api/customers
-GET    /api/notifications
-GET    /api/catalog/:slug      ← Público, sin auth
-```
-
-Todos los endpoints protegidos requieren:
-- Header `Authorization: Bearer <token>`
-- Header `X-Business-Id: <businessId>`
+## 🔑 Credenciales demo
+| Campo | Valor |
+|-------|-------|
+| Email | admin@demo.com |
+| Password | Admin123! |
+| Empresa | Demo Store |
 
 ---
 
-## 🗄 Tablas de la base de datos
+## 🐳 Docker (producción)
+```bash
+# Copiar y editar variables
+cp backend/.env.example backend/.env
 
-| Tabla | Descripción |
-|---|---|
-| `users` | Cuentas de usuario con plan |
-| `businesses` | Empresas con slug público |
-| `business_members` | Miembros con rol y permisos |
-| `products` | Productos con código de barras |
-| `categories` | Categorías por empresa |
-| `warehouses` | Bodegas / ubicaciones |
-| `discounts` | Descuentos configurables |
-| `customers` | Clientes con datos fiscales |
-| `invoices` | Facturas completas |
-| `invoice_items` | Líneas de cada factura |
-| `transactions` | Movimientos de inventario |
-| `invoice_sequences` | Numeración automática de facturas |
-| `plan_limits` | Límites por plan |
+# Build frontend
+cd frontend && npm install && npm run build && cd ..
+
+# Levantar todo
+docker-compose up -d
+```
 
 ---
 
-## 🆚 Cambios respecto a v1
+## 📁 Estructura
+```
+liquidpos/
+├── backend/
+│   ├── src/
+│   │   ├── app.js              # Entry point Express + Socket.io
+│   │   ├── config/db.js        # Pool MySQL
+│   │   ├── middlewares/auth.js # JWT + tenant + RBAC
+│   │   └── modules/
+│   │       ├── auth/           # Login, register, companies
+│   │       ├── catalog/        # Productos, categorías
+│   │       ├── pos/            # Pedidos, pagos, caja
+│   │       ├── inventory/      # Stock, movimientos
+│   │       ├── stats/          # Dashboard, reportes
+│   │       ├── users/          # Miembros, invitaciones
+│   │       ├── ai/             # Predicción, sugerencias
+│   │       └── public/         # Vitrina pública
+│   └── schema.sql              # Schema completo + seed
+│
+└── frontend/
+    └── src/
+        ├── context/AppContext.jsx  # Auth, Theme, Toast, Cart
+        ├── layouts/                # AppLayout (sidebar), POSLayout
+        └── pages/
+            ├── auth/               # Login, Register, Onboard
+            ├── dashboard/          # Stats + gráficos
+            ├── pos/                # POS completo con carrito
+            ├── catalog/            # CRUD productos
+            ├── inventory/          # Stock + movimientos
+            ├── orders/             # Historial de pedidos
+            ├── settings/           # Team + Settings
+            └── public/             # Vitrina @empresa
+```
 
-| Antes (v1) | Ahora (v2) |
-|---|---|
-| Solo mobile (max 480px) | **Totalmente responsive** (mobile / tablet / desktop) |
-| Sesiones en memoria | **JWT stateless** — compatible con Vercel serverless |
-| Un solo usuario/negocio | **Multi-empresa** con cambio de contexto |
-| Sin precios reales | **Precio + costo por producto** |
-| Sin facturación | **POS completo** con carrito y recibo |
-| Sin roles | **5 roles** con permisos granulares RBAC |
-| Sin catálogo | **Catálogo público** en `/@slug` |
-| Sin descuentos reales | **Descuentos** por producto o globales en factura |
-| Stats hardcoded ($15) | **Valores reales** de precio y costo |
-| Sin clientes | **CRM de clientes** con datos fiscales |
-| Sin bodegas múltiples | **Bodegas** gestionables por empresa |
-| Sin planes reales | **Sistema premium** con límites reales |
+---
+
+## 🔗 Rutas principales
+| URL | Descripción |
+|-----|-------------|
+| `/login` | Inicio de sesión |
+| `/register` | Registro |
+| `/onboard` | Crear empresa |
+| `/dashboard` | Panel principal |
+| `/pos` | Punto de venta (pantalla completa) |
+| `/catalog` | Gestión de productos |
+| `/inventory` | Control de stock |
+| `/orders` | Historial de pedidos |
+| `/team` | Gestión de equipo |
+| `/settings` | Configuración |
+| `/@:slug` | Vitrina pública de la empresa |
+
+---
+
+## 🛒 Funcionalidades
+- ✅ Autenticación JWT + refresh tokens
+- ✅ Multiempresa (shared DB con company_id)
+- ✅ RBAC: owner / manager / cashier / waiter / warehouse / accountant
+- ✅ Invitaciones por email con token
+- ✅ Catálogo de productos con categorías
+- ✅ POS con carrito, búsqueda en tiempo real
+- ✅ Lector de código de barras USB (laser)
+- ✅ Múltiples métodos de pago
+- ✅ Control de inventario con movimientos trazables
+- ✅ Alertas de stock bajo en tiempo real (WebSocket)
+- ✅ Dashboard con gráficos interactivos (Recharts)
+- ✅ IA: predicción de demanda, precio sugerido, basket analysis
+- ✅ Vitrina pública @empresa con integración WhatsApp
+- ✅ Modo claro / oscuro
+- ✅ Diseño responsive (mobile first)
+
+---
+
+## 🌐 Variables de entorno (.env)
+```env
+PORT=3001
+FRONTEND_URL=http://localhost:5173
+JWT_SECRET=tu-secret-aqui
+DB_HOST=localhost
+DB_NAME=liquidpos
+DB_USER=root
+DB_PASS=
+```
+
+---
+
+*LiquidPOS © 2026 — Arquitectura SaaS POS multiinquilino*
